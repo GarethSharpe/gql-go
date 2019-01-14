@@ -1,0 +1,11 @@
+schema:
+  - "schema/*.graphql"
+exec:
+  filename: generated/generated.go
+  package: generated
+model:
+  filename: models/models.go
+  package: models
+resolver:
+  filename: resolvers/resolvers.go
+  type: Resolver

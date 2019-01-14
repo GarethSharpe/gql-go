@@ -1,0 +1,10 @@
+# Query type
+type Query {
+  Account(id: String!): Account!
+  Accounts: [Account!]!
+}
+
+# Mutation type
+type Mutation {
+  CreateAccount(account: InputAccount!): String!
+}

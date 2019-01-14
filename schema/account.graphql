@@ -1,0 +1,11 @@
+
+# Account sObject
+type Account {
+    Id: String
+    Name: String
+}
+
+# Input Account sObject
+input InputAccount {
+    Name: String
+}
