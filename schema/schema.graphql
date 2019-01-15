@@ -1,10 +1,10 @@
 # Query type
 type Query {
-  Account(id: String!): Account!
-  Accounts: [Account!]!
+  Case(id: String!): Case!
+  Cases: [Case!]!
 }
 
 # Mutation type
 type Mutation {
-  CreateAccount(account: InputAccount!): String!
+  CreateCase(case: InputCase!): String!
 }

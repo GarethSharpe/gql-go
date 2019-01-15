@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"math/rand"
 
-	"github.com/garethsharpe/gql/generated"
 	"github.com/garethsharpe/gql/models"
+	"github.com/garethsharpe/gql/generated"
 )
 
-type Resolver struct {
-	accounts []models.Account
+type Resolver struct{
+	cases []models.Case
 }
 
 func (r *Resolver) Mutation() generated.MutationResolver {
@@ -22,28 +22,29 @@ func (r *Resolver) Query() generated.QueryResolver {
 
 type mutationResolver struct{ *Resolver }
 
-func (r *mutationResolver) CreateAccount(ctx context.Context, account models.InputAccount) (string, error) {
+func (r *mutationResolver) CreateCase(ctx context.Context, caseArg models.InputCase) (string, error) {
 	id := fmt.Sprintf("T%d", rand.Int())
-	newAccount := models.Account{
-		Name: account.Name,
-		Id:   &id,
+	c := models.Case{
+		Name:   caseArg.Name,
+		ID:     &id,
 	}
-	r.accounts = append(r.accounts, newAccount)
+	r.cases = append(r.cases, c)
 	return id, nil
 }
 
 type queryResolver struct{ *Resolver }
 
-func (r *queryResolver) Account(ctx context.Context, id string) (models.Account, error) {
-	var account models.Account
-	for i := range r.accounts {
-		if *r.accounts[i].Id == id {
-			account = r.accounts[i]
+func (r *queryResolver) Case(ctx context.Context, id string) (models.Case, error) {
+	var returnCase models.Case
+	for _, c := range r.cases {
+		if *c.ID == id {
+			returnCase = c
 			break
 		}
 	}
-	return account, nil
+	return returnCase, nil
 }
-func (r *queryResolver) Accounts(ctx context.Context) ([]models.Account, error) {
-	return r.accounts, nil
+
+func (r *queryResolver) Cases(ctx context.Context) ([]models.Case, error) {
+	return r.cases, nil
 }

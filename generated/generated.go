@@ -40,45 +40,78 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
-	Account struct {
+	Asset struct {
+		Id   func(childComplexity int) int
+		Name func(childComplexity int) int
+	}
+
+	Case struct {
+		Id                 func(childComplexity int) int
+		Name               func(childComplexity int) int
+		Asset              func(childComplexity int) int
+		CaseNumber         func(childComplexity int) int
+		Origin             func(childComplexity int) int
+		Owner              func(childComplexity int) int
+		Reason             func(childComplexity int) int
+		IsClosed           func(childComplexity int) int
+		IsClosedOnCreate   func(childComplexity int) int
+		Contact            func(childComplexity int) int
+		CreatedBy          func(childComplexity int) int
+		ClosedDate         func(childComplexity int) int
+		CreatedDate        func(childComplexity int) int
+		IsDeleted          func(childComplexity int) int
+		Description        func(childComplexity int) int
+		IsEscalated        func(childComplexity int) int
+		LastModifiedBy     func(childComplexity int) int
+		LastModifiedDate   func(childComplexity int) int
+		LastReferencedDate func(childComplexity int) int
+		LastViewedDate     func(childComplexity int) int
+	}
+
+	Contact struct {
 		Id   func(childComplexity int) int
 		Name func(childComplexity int) int
 	}
 
 	Mutation struct {
-		CreateAccount func(childComplexity int, account models.InputAccount) int
+		CreateCase func(childComplexity int, caseArg models.InputCase) int
 	}
 
 	Query struct {
-		Account  func(childComplexity int, id string) int
-		Accounts func(childComplexity int) int
+		Case  func(childComplexity int, id string) int
+		Cases func(childComplexity int) int
+	}
+
+	User struct {
+		Id   func(childComplexity int) int
+		Name func(childComplexity int) int
 	}
 }
 
 type MutationResolver interface {
-	CreateAccount(ctx context.Context, account models.InputAccount) (string, error)
+	CreateCase(ctx context.Context, caseArg models.InputCase) (string, error)
 }
 type QueryResolver interface {
-	Account(ctx context.Context, id string) (models.Account, error)
-	Accounts(ctx context.Context) ([]models.Account, error)
+	Case(ctx context.Context, id string) (models.Case, error)
+	Cases(ctx context.Context) ([]models.Case, error)
 }
 
-func field_Mutation_CreateAccount_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func field_Mutation_CreateCase_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	args := map[string]interface{}{}
-	var arg0 models.InputAccount
-	if tmp, ok := rawArgs["account"]; ok {
+	var arg0 models.InputCase
+	if tmp, ok := rawArgs["case"]; ok {
 		var err error
-		arg0, err = UnmarshalInputAccount(tmp)
+		arg0, err = UnmarshalInputCase(tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["account"] = arg0
+	args["case"] = arg0
 	return args, nil
 
 }
 
-func field_Query_Account_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func field_Query_Case_args(rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	args := map[string]interface{}{}
 	var arg0 string
 	if tmp, ok := rawArgs["id"]; ok {
@@ -151,50 +184,218 @@ func (e *executableSchema) Schema() *ast.Schema {
 func (e *executableSchema) Complexity(typeName, field string, childComplexity int, rawArgs map[string]interface{}) (int, bool) {
 	switch typeName + "." + field {
 
-	case "Account.Id":
-		if e.complexity.Account.Id == nil {
+	case "Asset.Id":
+		if e.complexity.Asset.Id == nil {
 			break
 		}
 
-		return e.complexity.Account.Id(childComplexity), true
+		return e.complexity.Asset.Id(childComplexity), true
 
-	case "Account.Name":
-		if e.complexity.Account.Name == nil {
+	case "Asset.Name":
+		if e.complexity.Asset.Name == nil {
 			break
 		}
 
-		return e.complexity.Account.Name(childComplexity), true
+		return e.complexity.Asset.Name(childComplexity), true
 
-	case "Mutation.CreateAccount":
-		if e.complexity.Mutation.CreateAccount == nil {
+	case "Case.Id":
+		if e.complexity.Case.Id == nil {
 			break
 		}
 
-		args, err := field_Mutation_CreateAccount_args(rawArgs)
+		return e.complexity.Case.Id(childComplexity), true
+
+	case "Case.Name":
+		if e.complexity.Case.Name == nil {
+			break
+		}
+
+		return e.complexity.Case.Name(childComplexity), true
+
+	case "Case.Asset":
+		if e.complexity.Case.Asset == nil {
+			break
+		}
+
+		return e.complexity.Case.Asset(childComplexity), true
+
+	case "Case.CaseNumber":
+		if e.complexity.Case.CaseNumber == nil {
+			break
+		}
+
+		return e.complexity.Case.CaseNumber(childComplexity), true
+
+	case "Case.Origin":
+		if e.complexity.Case.Origin == nil {
+			break
+		}
+
+		return e.complexity.Case.Origin(childComplexity), true
+
+	case "Case.Owner":
+		if e.complexity.Case.Owner == nil {
+			break
+		}
+
+		return e.complexity.Case.Owner(childComplexity), true
+
+	case "Case.Reason":
+		if e.complexity.Case.Reason == nil {
+			break
+		}
+
+		return e.complexity.Case.Reason(childComplexity), true
+
+	case "Case.IsClosed":
+		if e.complexity.Case.IsClosed == nil {
+			break
+		}
+
+		return e.complexity.Case.IsClosed(childComplexity), true
+
+	case "Case.IsClosedOnCreate":
+		if e.complexity.Case.IsClosedOnCreate == nil {
+			break
+		}
+
+		return e.complexity.Case.IsClosedOnCreate(childComplexity), true
+
+	case "Case.Contact":
+		if e.complexity.Case.Contact == nil {
+			break
+		}
+
+		return e.complexity.Case.Contact(childComplexity), true
+
+	case "Case.CreatedBy":
+		if e.complexity.Case.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.Case.CreatedBy(childComplexity), true
+
+	case "Case.ClosedDate":
+		if e.complexity.Case.ClosedDate == nil {
+			break
+		}
+
+		return e.complexity.Case.ClosedDate(childComplexity), true
+
+	case "Case.CreatedDate":
+		if e.complexity.Case.CreatedDate == nil {
+			break
+		}
+
+		return e.complexity.Case.CreatedDate(childComplexity), true
+
+	case "Case.IsDeleted":
+		if e.complexity.Case.IsDeleted == nil {
+			break
+		}
+
+		return e.complexity.Case.IsDeleted(childComplexity), true
+
+	case "Case.Description":
+		if e.complexity.Case.Description == nil {
+			break
+		}
+
+		return e.complexity.Case.Description(childComplexity), true
+
+	case "Case.IsEscalated":
+		if e.complexity.Case.IsEscalated == nil {
+			break
+		}
+
+		return e.complexity.Case.IsEscalated(childComplexity), true
+
+	case "Case.LastModifiedBy":
+		if e.complexity.Case.LastModifiedBy == nil {
+			break
+		}
+
+		return e.complexity.Case.LastModifiedBy(childComplexity), true
+
+	case "Case.LastModifiedDate":
+		if e.complexity.Case.LastModifiedDate == nil {
+			break
+		}
+
+		return e.complexity.Case.LastModifiedDate(childComplexity), true
+
+	case "Case.LastReferencedDate":
+		if e.complexity.Case.LastReferencedDate == nil {
+			break
+		}
+
+		return e.complexity.Case.LastReferencedDate(childComplexity), true
+
+	case "Case.LastViewedDate":
+		if e.complexity.Case.LastViewedDate == nil {
+			break
+		}
+
+		return e.complexity.Case.LastViewedDate(childComplexity), true
+
+	case "Contact.Id":
+		if e.complexity.Contact.Id == nil {
+			break
+		}
+
+		return e.complexity.Contact.Id(childComplexity), true
+
+	case "Contact.Name":
+		if e.complexity.Contact.Name == nil {
+			break
+		}
+
+		return e.complexity.Contact.Name(childComplexity), true
+
+	case "Mutation.CreateCase":
+		if e.complexity.Mutation.CreateCase == nil {
+			break
+		}
+
+		args, err := field_Mutation_CreateCase_args(rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateAccount(childComplexity, args["account"].(models.InputAccount)), true
+		return e.complexity.Mutation.CreateCase(childComplexity, args["case"].(models.InputCase)), true
 
-	case "Query.Account":
-		if e.complexity.Query.Account == nil {
+	case "Query.Case":
+		if e.complexity.Query.Case == nil {
 			break
 		}
 
-		args, err := field_Query_Account_args(rawArgs)
+		args, err := field_Query_Case_args(rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Query.Account(childComplexity, args["id"].(string)), true
+		return e.complexity.Query.Case(childComplexity, args["id"].(string)), true
 
-	case "Query.Accounts":
-		if e.complexity.Query.Accounts == nil {
+	case "Query.Cases":
+		if e.complexity.Query.Cases == nil {
 			break
 		}
 
-		return e.complexity.Query.Accounts(childComplexity), true
+		return e.complexity.Query.Cases(childComplexity), true
+
+	case "User.Id":
+		if e.complexity.User.Id == nil {
+			break
+		}
+
+		return e.complexity.User.Id(childComplexity), true
+
+	case "User.Name":
+		if e.complexity.User.Name == nil {
+			break
+		}
+
+		return e.complexity.User.Name(childComplexity), true
 
 	}
 	return 0, false
@@ -242,11 +443,11 @@ type executionContext struct {
 	*executableSchema
 }
 
-var accountImplementors = []string{"Account"}
+var assetImplementors = []string{"Asset"}
 
 // nolint: gocyclo, errcheck, gas, goconst
-func (ec *executionContext) _Account(ctx context.Context, sel ast.SelectionSet, obj *models.Account) graphql.Marshaler {
-	fields := graphql.CollectFields(ctx, sel, accountImplementors)
+func (ec *executionContext) _Asset(ctx context.Context, sel ast.SelectionSet, obj *models.Asset) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, assetImplementors)
 
 	out := graphql.NewOrderedMap(len(fields))
 	invalid := false
@@ -255,11 +456,11 @@ func (ec *executionContext) _Account(ctx context.Context, sel ast.SelectionSet, 
 
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("Account")
+			out.Values[i] = graphql.MarshalString("Asset")
 		case "Id":
-			out.Values[i] = ec._Account_Id(ctx, field, obj)
+			out.Values[i] = ec._Asset_Id(ctx, field, obj)
 		case "Name":
-			out.Values[i] = ec._Account_Name(ctx, field, obj)
+			out.Values[i] = ec._Asset_Name(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -272,11 +473,11 @@ func (ec *executionContext) _Account(ctx context.Context, sel ast.SelectionSet, 
 }
 
 // nolint: vetshadow
-func (ec *executionContext) _Account_Id(ctx context.Context, field graphql.CollectedField, obj *models.Account) graphql.Marshaler {
+func (ec *executionContext) _Asset_Id(ctx context.Context, field graphql.CollectedField, obj *models.Asset) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object: "Account",
+		Object: "Asset",
 		Args:   nil,
 		Field:  field,
 	}
@@ -284,7 +485,7 @@ func (ec *executionContext) _Account_Id(ctx context.Context, field graphql.Colle
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Id, nil
+		return obj.ID, nil
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -300,11 +501,726 @@ func (ec *executionContext) _Account_Id(ctx context.Context, field graphql.Colle
 }
 
 // nolint: vetshadow
-func (ec *executionContext) _Account_Name(ctx context.Context, field graphql.CollectedField, obj *models.Account) graphql.Marshaler {
+func (ec *executionContext) _Asset_Name(ctx context.Context, field graphql.CollectedField, obj *models.Asset) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object: "Account",
+		Object: "Asset",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+var caseImplementors = []string{"Case"}
+
+// nolint: gocyclo, errcheck, gas, goconst
+func (ec *executionContext) _Case(ctx context.Context, sel ast.SelectionSet, obj *models.Case) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, caseImplementors)
+
+	out := graphql.NewOrderedMap(len(fields))
+	invalid := false
+	for i, field := range fields {
+		out.Keys[i] = field.Alias
+
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Case")
+		case "Id":
+			out.Values[i] = ec._Case_Id(ctx, field, obj)
+		case "Name":
+			out.Values[i] = ec._Case_Name(ctx, field, obj)
+		case "Asset":
+			out.Values[i] = ec._Case_Asset(ctx, field, obj)
+		case "CaseNumber":
+			out.Values[i] = ec._Case_CaseNumber(ctx, field, obj)
+		case "Origin":
+			out.Values[i] = ec._Case_Origin(ctx, field, obj)
+		case "Owner":
+			out.Values[i] = ec._Case_Owner(ctx, field, obj)
+		case "Reason":
+			out.Values[i] = ec._Case_Reason(ctx, field, obj)
+		case "IsClosed":
+			out.Values[i] = ec._Case_IsClosed(ctx, field, obj)
+		case "IsClosedOnCreate":
+			out.Values[i] = ec._Case_IsClosedOnCreate(ctx, field, obj)
+		case "Contact":
+			out.Values[i] = ec._Case_Contact(ctx, field, obj)
+		case "CreatedBy":
+			out.Values[i] = ec._Case_CreatedBy(ctx, field, obj)
+		case "ClosedDate":
+			out.Values[i] = ec._Case_ClosedDate(ctx, field, obj)
+		case "CreatedDate":
+			out.Values[i] = ec._Case_CreatedDate(ctx, field, obj)
+		case "IsDeleted":
+			out.Values[i] = ec._Case_IsDeleted(ctx, field, obj)
+		case "Description":
+			out.Values[i] = ec._Case_Description(ctx, field, obj)
+		case "IsEscalated":
+			out.Values[i] = ec._Case_IsEscalated(ctx, field, obj)
+		case "LastModifiedBy":
+			out.Values[i] = ec._Case_LastModifiedBy(ctx, field, obj)
+		case "LastModifiedDate":
+			out.Values[i] = ec._Case_LastModifiedDate(ctx, field, obj)
+		case "LastReferencedDate":
+			out.Values[i] = ec._Case_LastReferencedDate(ctx, field, obj)
+		case "LastViewedDate":
+			out.Values[i] = ec._Case_LastViewedDate(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_Id(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_Name(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_Asset(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Asset, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Asset)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+
+	return ec._Asset(ctx, field.Selections, res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_CaseNumber(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CaseNumber, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_Origin(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Origin, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_Owner(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Owner, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+
+	return ec._User(ctx, field.Selections, res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_Reason(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Reason, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_IsClosed(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsClosed, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_IsClosedOnCreate(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsClosedOnCreate, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_Contact(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Contact, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Contact)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+
+	return ec._Contact(ctx, field.Selections, res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_CreatedBy(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+
+	return ec._User(ctx, field.Selections, res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_ClosedDate(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ClosedDate, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_CreatedDate(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedDate, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_IsDeleted(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsDeleted, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_Description(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Description, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_IsEscalated(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsEscalated, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_LastModifiedBy(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LastModifiedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+
+	return ec._User(ctx, field.Selections, res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_LastModifiedDate(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LastModifiedDate, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_LastReferencedDate(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LastReferencedDate, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Case_LastViewedDate(ctx context.Context, field graphql.CollectedField, obj *models.Case) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Case",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LastViewedDate, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+var contactImplementors = []string{"Contact"}
+
+// nolint: gocyclo, errcheck, gas, goconst
+func (ec *executionContext) _Contact(ctx context.Context, sel ast.SelectionSet, obj *models.Contact) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, contactImplementors)
+
+	out := graphql.NewOrderedMap(len(fields))
+	invalid := false
+	for i, field := range fields {
+		out.Keys[i] = field.Alias
+
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Contact")
+		case "Id":
+			out.Values[i] = ec._Contact_Id(ctx, field, obj)
+		case "Name":
+			out.Values[i] = ec._Contact_Name(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Contact_Id(ctx context.Context, field graphql.CollectedField, obj *models.Contact) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Contact",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _Contact_Name(ctx context.Context, field graphql.CollectedField, obj *models.Contact) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Contact",
 		Args:   nil,
 		Field:  field,
 	}
@@ -345,8 +1261,8 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Mutation")
-		case "CreateAccount":
-			out.Values[i] = ec._Mutation_CreateAccount(ctx, field)
+		case "CreateCase":
+			out.Values[i] = ec._Mutation_CreateCase(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
@@ -362,11 +1278,11 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 }
 
 // nolint: vetshadow
-func (ec *executionContext) _Mutation_CreateAccount(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+func (ec *executionContext) _Mutation_CreateCase(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := field_Mutation_CreateAccount_args(rawArgs)
+	args, err := field_Mutation_CreateCase_args(rawArgs)
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
@@ -380,7 +1296,7 @@ func (ec *executionContext) _Mutation_CreateAccount(ctx context.Context, field g
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateAccount(rctx, args["account"].(models.InputAccount))
+		return ec.resolvers.Mutation().CreateCase(rctx, args["case"].(models.InputCase))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -413,19 +1329,19 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Query")
-		case "Account":
+		case "Case":
 			wg.Add(1)
 			go func(i int, field graphql.CollectedField) {
-				out.Values[i] = ec._Query_Account(ctx, field)
+				out.Values[i] = ec._Query_Case(ctx, field)
 				if out.Values[i] == graphql.Null {
 					invalid = true
 				}
 				wg.Done()
 			}(i, field)
-		case "Accounts":
+		case "Cases":
 			wg.Add(1)
 			go func(i int, field graphql.CollectedField) {
-				out.Values[i] = ec._Query_Accounts(ctx, field)
+				out.Values[i] = ec._Query_Cases(ctx, field)
 				if out.Values[i] == graphql.Null {
 					invalid = true
 				}
@@ -447,11 +1363,11 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 }
 
 // nolint: vetshadow
-func (ec *executionContext) _Query_Account(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+func (ec *executionContext) _Query_Case(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := field_Query_Account_args(rawArgs)
+	args, err := field_Query_Case_args(rawArgs)
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
@@ -465,7 +1381,7 @@ func (ec *executionContext) _Query_Account(ctx context.Context, field graphql.Co
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Account(rctx, args["id"].(string))
+		return ec.resolvers.Query().Case(rctx, args["id"].(string))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -473,15 +1389,15 @@ func (ec *executionContext) _Query_Account(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Account)
+	res := resTmp.(models.Case)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 
-	return ec._Account(ctx, field.Selections, &res)
+	return ec._Case(ctx, field.Selections, &res)
 }
 
 // nolint: vetshadow
-func (ec *executionContext) _Query_Accounts(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+func (ec *executionContext) _Query_Cases(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -493,7 +1409,7 @@ func (ec *executionContext) _Query_Accounts(ctx context.Context, field graphql.C
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Accounts(rctx)
+		return ec.resolvers.Query().Cases(rctx)
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -501,7 +1417,7 @@ func (ec *executionContext) _Query_Accounts(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]models.Account)
+	res := resTmp.([]models.Case)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 
@@ -526,7 +1442,7 @@ func (ec *executionContext) _Query_Accounts(ctx context.Context, field graphql.C
 			}
 			arr1[idx1] = func() graphql.Marshaler {
 
-				return ec._Account(ctx, field.Selections, &res[idx1])
+				return ec._Case(ctx, field.Selections, &res[idx1])
 			}()
 		}
 		if isLen1 {
@@ -602,6 +1518,91 @@ func (ec *executionContext) _Query___schema(ctx context.Context, field graphql.C
 	}
 
 	return ec.___Schema(ctx, field.Selections, res)
+}
+
+var userImplementors = []string{"User"}
+
+// nolint: gocyclo, errcheck, gas, goconst
+func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *models.User) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, userImplementors)
+
+	out := graphql.NewOrderedMap(len(fields))
+	invalid := false
+	for i, field := range fields {
+		out.Keys[i] = field.Alias
+
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("User")
+		case "Id":
+			out.Values[i] = ec._User_Id(ctx, field, obj)
+		case "Name":
+			out.Values[i] = ec._User_Name(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _User_Id(ctx context.Context, field graphql.CollectedField, obj *models.User) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "User",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
+}
+
+// nolint: vetshadow
+func (ec *executionContext) _User_Name(ctx context.Context, field graphql.CollectedField, obj *models.User) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "User",
+		Args:   nil,
+		Field:  field,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+
+	if res == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalString(*res)
 }
 
 var __DirectiveImplementors = []string{"__Directive"}
@@ -2049,8 +3050,187 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 	return ec.___Type(ctx, field.Selections, res)
 }
 
-func UnmarshalInputAccount(v interface{}) (models.InputAccount, error) {
-	var it models.InputAccount
+func UnmarshalInputAsset(v interface{}) (models.InputAsset, error) {
+	var it models.InputAsset
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "Name":
+			var err error
+			var ptr1 string
+			if v != nil {
+				ptr1, err = graphql.UnmarshalString(v)
+				it.Name = &ptr1
+			}
+
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func UnmarshalInputCase(v interface{}) (models.InputCase, error) {
+	var it models.InputCase
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "AssetId":
+			var err error
+			var ptr1 string
+			if v != nil {
+				ptr1, err = graphql.UnmarshalString(v)
+				it.AssetID = &ptr1
+			}
+
+			if err != nil {
+				return it, err
+			}
+		case "BusinessHoursId":
+			var err error
+			var ptr1 string
+			if v != nil {
+				ptr1, err = graphql.UnmarshalString(v)
+				it.BusinessHoursID = &ptr1
+			}
+
+			if err != nil {
+				return it, err
+			}
+		case "CaseNumber":
+			var err error
+			var ptr1 string
+			if v != nil {
+				ptr1, err = graphql.UnmarshalString(v)
+				it.CaseNumber = &ptr1
+			}
+
+			if err != nil {
+				return it, err
+			}
+		case "Origin":
+			var err error
+			var ptr1 string
+			if v != nil {
+				ptr1, err = graphql.UnmarshalString(v)
+				it.Origin = &ptr1
+			}
+
+			if err != nil {
+				return it, err
+			}
+		case "OwnerId":
+			var err error
+			var ptr1 string
+			if v != nil {
+				ptr1, err = graphql.UnmarshalString(v)
+				it.OwnerID = &ptr1
+			}
+
+			if err != nil {
+				return it, err
+			}
+		case "Reason":
+			var err error
+			var ptr1 string
+			if v != nil {
+				ptr1, err = graphql.UnmarshalString(v)
+				it.Reason = &ptr1
+			}
+
+			if err != nil {
+				return it, err
+			}
+		case "IsClosed":
+			var err error
+			var ptr1 string
+			if v != nil {
+				ptr1, err = graphql.UnmarshalString(v)
+				it.IsClosed = &ptr1
+			}
+
+			if err != nil {
+				return it, err
+			}
+		case "Name":
+			var err error
+			var ptr1 string
+			if v != nil {
+				ptr1, err = graphql.UnmarshalString(v)
+				it.Name = &ptr1
+			}
+
+			if err != nil {
+				return it, err
+			}
+		case "IsDeleted":
+			var err error
+			var ptr1 string
+			if v != nil {
+				ptr1, err = graphql.UnmarshalString(v)
+				it.IsDeleted = &ptr1
+			}
+
+			if err != nil {
+				return it, err
+			}
+		case "Description":
+			var err error
+			var ptr1 string
+			if v != nil {
+				ptr1, err = graphql.UnmarshalString(v)
+				it.Description = &ptr1
+			}
+
+			if err != nil {
+				return it, err
+			}
+		case "IsEscalated":
+			var err error
+			var ptr1 string
+			if v != nil {
+				ptr1, err = graphql.UnmarshalString(v)
+				it.IsEscalated = &ptr1
+			}
+
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func UnmarshalInputContact(v interface{}) (models.InputContact, error) {
+	var it models.InputContact
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "Name":
+			var err error
+			var ptr1 string
+			if v != nil {
+				ptr1, err = graphql.UnmarshalString(v)
+				it.Name = &ptr1
+			}
+
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func UnmarshalInputUser(v interface{}) (models.InputUser, error) {
+	var it models.InputUser
 	var asMap = v.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -2102,26 +3282,86 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var parsedSchema = gqlparser.MustLoadSchema(
-	&ast.Source{Name: "schema/account.graphql", Input: `
-# Account sObject
-type Account {
+	&ast.Source{Name: "schema/asset.graphql", Input: `# Asset sObject
+type Asset {
     Id: String
     Name: String
 }
 
-# Input Account sObject
-input InputAccount {
+# Input asset sObject
+input InputAsset {
+    Name: String
+}`},
+	&ast.Source{Name: "schema/case.graphql", Input: `
+# Case sObject
+type Case {
+    Id: String
+    Name: String
+    Asset: Asset
+    CaseNumber: String
+    Origin: String
+    Owner: User
+    Reason: String
+    IsClosed: String
+    IsClosedOnCreate: String
+    Contact: Contact
+    CreatedBy: User
+    ClosedDate: String
+    CreatedDate: String
+    IsDeleted: String
+    Description: String
+    IsEscalated: String
+    LastModifiedBy: User
+    LastModifiedDate: String
+    LastReferencedDate: String
+    LastViewedDate: String
+}
+
+# Input Case sObject
+input InputCase {
+    AssetId: String
+    BusinessHoursId: String	
+    CaseNumber: String
+    Origin: String
+    OwnerId: String
+    Reason: String
+    IsClosed: String
+    Name: String
+    IsDeleted: String
+    Description: String
+    IsEscalated: String
+}
+	
+`},
+	&ast.Source{Name: "schema/contact.graphql", Input: `# Contact sObject
+type Contact {
+    Id: String
+    Name: String
+}
+
+# Input contact sObject
+input InputContact {
     Name: String
 }`},
 	&ast.Source{Name: "schema/schema.graphql", Input: `# Query type
 type Query {
-  Account(id: String!): Account!
-  Accounts: [Account!]!
+  Case(id: String!): Case!
+  Cases: [Case!]!
 }
 
 # Mutation type
 type Mutation {
-  CreateAccount(account: InputAccount!): String!
+  CreateCase(case: InputCase!): String!
 }
 `},
+	&ast.Source{Name: "schema/user.graphql", Input: `# User sObject
+type User {
+    Id: String
+    Name: String
+}
+
+# Input user sObject
+input InputUser {
+    Name: String
+}`},
 )
