@@ -7,6 +7,7 @@ import (
 
 	"github.com/garethsharpe/gql/models"
 	"github.com/garethsharpe/gql/generated"
+	"github.com/garethsharpe/gql/force"
 )
 
 type Resolver struct{
