@@ -32,6 +32,7 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Case() CaseResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
 }
@@ -88,6 +89,16 @@ type ComplexityRoot struct {
 	}
 }
 
+type CaseResolver interface {
+	Asset(ctx context.Context, obj *models.Case) (*models.Asset, error)
+
+	Owner(ctx context.Context, obj *models.Case) (*models.User, error)
+
+	Contact(ctx context.Context, obj *models.Case) (*models.Contact, error)
+	CreatedBy(ctx context.Context, obj *models.Case) (*models.User, error)
+
+	LastModifiedBy(ctx context.Context, obj *models.Case) (*models.User, error)
+}
 type MutationResolver interface {
 	CreateCase(ctx context.Context, caseArg models.InputCase) (string, error)
 }
@@ -534,6 +545,7 @@ var caseImplementors = []string{"Case"}
 func (ec *executionContext) _Case(ctx context.Context, sel ast.SelectionSet, obj *models.Case) graphql.Marshaler {
 	fields := graphql.CollectFields(ctx, sel, caseImplementors)
 
+	var wg sync.WaitGroup
 	out := graphql.NewOrderedMap(len(fields))
 	invalid := false
 	for i, field := range fields {
@@ -547,13 +559,21 @@ func (ec *executionContext) _Case(ctx context.Context, sel ast.SelectionSet, obj
 		case "Name":
 			out.Values[i] = ec._Case_Name(ctx, field, obj)
 		case "Asset":
-			out.Values[i] = ec._Case_Asset(ctx, field, obj)
+			wg.Add(1)
+			go func(i int, field graphql.CollectedField) {
+				out.Values[i] = ec._Case_Asset(ctx, field, obj)
+				wg.Done()
+			}(i, field)
 		case "CaseNumber":
 			out.Values[i] = ec._Case_CaseNumber(ctx, field, obj)
 		case "Origin":
 			out.Values[i] = ec._Case_Origin(ctx, field, obj)
 		case "Owner":
-			out.Values[i] = ec._Case_Owner(ctx, field, obj)
+			wg.Add(1)
+			go func(i int, field graphql.CollectedField) {
+				out.Values[i] = ec._Case_Owner(ctx, field, obj)
+				wg.Done()
+			}(i, field)
 		case "Reason":
 			out.Values[i] = ec._Case_Reason(ctx, field, obj)
 		case "IsClosed":
@@ -561,9 +581,17 @@ func (ec *executionContext) _Case(ctx context.Context, sel ast.SelectionSet, obj
 		case "IsClosedOnCreate":
 			out.Values[i] = ec._Case_IsClosedOnCreate(ctx, field, obj)
 		case "Contact":
-			out.Values[i] = ec._Case_Contact(ctx, field, obj)
+			wg.Add(1)
+			go func(i int, field graphql.CollectedField) {
+				out.Values[i] = ec._Case_Contact(ctx, field, obj)
+				wg.Done()
+			}(i, field)
 		case "CreatedBy":
-			out.Values[i] = ec._Case_CreatedBy(ctx, field, obj)
+			wg.Add(1)
+			go func(i int, field graphql.CollectedField) {
+				out.Values[i] = ec._Case_CreatedBy(ctx, field, obj)
+				wg.Done()
+			}(i, field)
 		case "ClosedDate":
 			out.Values[i] = ec._Case_ClosedDate(ctx, field, obj)
 		case "CreatedDate":
@@ -575,7 +603,11 @@ func (ec *executionContext) _Case(ctx context.Context, sel ast.SelectionSet, obj
 		case "IsEscalated":
 			out.Values[i] = ec._Case_IsEscalated(ctx, field, obj)
 		case "LastModifiedBy":
-			out.Values[i] = ec._Case_LastModifiedBy(ctx, field, obj)
+			wg.Add(1)
+			go func(i int, field graphql.CollectedField) {
+				out.Values[i] = ec._Case_LastModifiedBy(ctx, field, obj)
+				wg.Done()
+			}(i, field)
 		case "LastModifiedDate":
 			out.Values[i] = ec._Case_LastModifiedDate(ctx, field, obj)
 		case "LastReferencedDate":
@@ -586,7 +618,7 @@ func (ec *executionContext) _Case(ctx context.Context, sel ast.SelectionSet, obj
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
 	}
-
+	wg.Wait()
 	if invalid {
 		return graphql.Null
 	}
@@ -606,19 +638,15 @@ func (ec *executionContext) _Case_Id(ctx context.Context, field graphql.Collecte
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
+		return obj.Id, nil
 	})
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -639,14 +667,10 @@ func (ec *executionContext) _Case_Name(ctx context.Context, field graphql.Collec
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -662,7 +686,7 @@ func (ec *executionContext) _Case_Asset(ctx context.Context, field graphql.Colle
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Asset, nil
+		return ec.resolvers.Case().Asset(rctx, obj)
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -696,14 +720,10 @@ func (ec *executionContext) _Case_CaseNumber(ctx context.Context, field graphql.
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -724,14 +744,10 @@ func (ec *executionContext) _Case_Origin(ctx context.Context, field graphql.Coll
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -747,7 +763,7 @@ func (ec *executionContext) _Case_Owner(ctx context.Context, field graphql.Colle
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Owner, nil
+		return ec.resolvers.Case().Owner(rctx, obj)
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -781,14 +797,10 @@ func (ec *executionContext) _Case_Reason(ctx context.Context, field graphql.Coll
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -809,14 +821,10 @@ func (ec *executionContext) _Case_IsClosed(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -837,14 +845,10 @@ func (ec *executionContext) _Case_IsClosedOnCreate(ctx context.Context, field gr
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -860,7 +864,7 @@ func (ec *executionContext) _Case_Contact(ctx context.Context, field graphql.Col
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Contact, nil
+		return ec.resolvers.Case().Contact(rctx, obj)
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -889,7 +893,7 @@ func (ec *executionContext) _Case_CreatedBy(ctx context.Context, field graphql.C
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedBy, nil
+		return ec.resolvers.Case().CreatedBy(rctx, obj)
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -923,14 +927,10 @@ func (ec *executionContext) _Case_ClosedDate(ctx context.Context, field graphql.
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -951,14 +951,10 @@ func (ec *executionContext) _Case_CreatedDate(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -979,14 +975,10 @@ func (ec *executionContext) _Case_IsDeleted(ctx context.Context, field graphql.C
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -1007,14 +999,10 @@ func (ec *executionContext) _Case_Description(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -1035,14 +1023,10 @@ func (ec *executionContext) _Case_IsEscalated(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -1058,7 +1042,7 @@ func (ec *executionContext) _Case_LastModifiedBy(ctx context.Context, field grap
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.LastModifiedBy, nil
+		return ec.resolvers.Case().LastModifiedBy(rctx, obj)
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -1092,14 +1076,10 @@ func (ec *executionContext) _Case_LastModifiedDate(ctx context.Context, field gr
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -1120,14 +1100,10 @@ func (ec *executionContext) _Case_LastReferencedDate(ctx context.Context, field 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 // nolint: vetshadow
@@ -1148,14 +1124,10 @@ func (ec *executionContext) _Case_LastViewedDate(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-
-	if res == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalString(*res)
+	return graphql.MarshalString(res)
 }
 
 var contactImplementors = []string{"Contact"}

@@ -7,29 +7,6 @@ type Asset struct {
 	Name *string `json:"Name"`
 }
 
-type Case struct {
-	ID                 *string  `json:"Id"`
-	Name               *string  `json:"Name"`
-	Asset              *Asset   `json:"Asset"`
-	CaseNumber         *string  `json:"CaseNumber"`
-	Origin             *string  `json:"Origin"`
-	Owner              *User    `json:"Owner"`
-	Reason             *string  `json:"Reason"`
-	IsClosed           *string  `json:"IsClosed"`
-	IsClosedOnCreate   *string  `json:"IsClosedOnCreate"`
-	Contact            *Contact `json:"Contact"`
-	CreatedBy          *User    `json:"CreatedBy"`
-	ClosedDate         *string  `json:"ClosedDate"`
-	CreatedDate        *string  `json:"CreatedDate"`
-	IsDeleted          *string  `json:"IsDeleted"`
-	Description        *string  `json:"Description"`
-	IsEscalated        *string  `json:"IsEscalated"`
-	LastModifiedBy     *User    `json:"LastModifiedBy"`
-	LastModifiedDate   *string  `json:"LastModifiedDate"`
-	LastReferencedDate *string  `json:"LastReferencedDate"`
-	LastViewedDate     *string  `json:"LastViewedDate"`
-}
-
 type Contact struct {
 	ID   *string `json:"Id"`
 	Name *string `json:"Name"`
