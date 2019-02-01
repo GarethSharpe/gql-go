@@ -2,20 +2,17 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
-	"math/rand"
 
+	"github.com/garethsharpe/gql/utils"
 	"github.com/garethsharpe/gql/models"
+	"github.com/garethsharpe/gql/api/appsvc"
 )
 
 type mutationResolver struct{ *Resolver }
 
 func (r *mutationResolver) CreateCase(ctx context.Context, caseArg models.InputCase) (string, error) {
-	id := fmt.Sprintf("T%d", rand.Int())
-	c := models.Case{
-		Name:   *caseArg.Name,
-		Id:     id,
-	}
-	r.cases = append(r.cases, c)
-	return id, nil
+	accessToken := ctx.Value(utils.ACCESS_TOKEN).(string)
+	appSvc := ctx.Value(utils.APPSVC).(api.IAppSvc)
+	id, err := appSvc.CreateCase(accessToken, caseArg)
+	return id, err
 }

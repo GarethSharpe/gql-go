@@ -8,18 +8,24 @@ import (
 	"github.com/99designs/gqlgen/handler"
 	"github.com/garethsharpe/gql/generated"
 	"github.com/garethsharpe/gql/resolvers"
+	"github.com/garethsharpe/gql/utils"
 )
-
-const defaultPort = "8080"
 
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = defaultPort
+		port = "8080"
 	}
 
+	mw := utils.ChainMiddleware(
+		utils.WithLogging,
+		utils.WithTracing,
+		utils.WithHeaders,
+		utils.WithAppSvc,
+	)
+
 	http.Handle("/", handler.Playground("GraphQL playground", "/query"))
-	http.Handle("/query", handler.GraphQL(generated.NewExecutableSchema(generated.Config{Resolvers: &resolvers.Resolver{}})))
+	http.Handle("/query", mw(handler.GraphQL(generated.NewExecutableSchema(generated.Config{Resolvers: &resolvers.Resolver{}}))))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))

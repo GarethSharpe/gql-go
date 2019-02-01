@@ -1,13 +1,10 @@
 package resolvers
 
 import (
-	"github.com/garethsharpe/gql/models"
 	"github.com/garethsharpe/gql/generated"
 )
 
-type Resolver struct{
-	cases []models.Case
-}
+type Resolver struct{ }
 
 func (r *Resolver) Mutation() generated.MutationResolver {
 	return &mutationResolver{r}
