@@ -9,7 +9,9 @@ func WithHeaders(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		accessToken := r.Header.Get(ACCESS_TOKEN)
 		if accessToken == "" {
-			next.ServeHTTP(w, r)
+			http.Error(w, AUTH_ERROR, 500)
+			r.Body.Close()
+			return
 		} else {
 			// connection, _ := GetConnection(accessToken);
 			ctx := context.WithValue(r.Context(), ACCESS_TOKEN, accessToken)

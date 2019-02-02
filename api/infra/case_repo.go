@@ -24,12 +24,10 @@ func (r *CaseRepo) GetCase(accessToken string, id string) (models.Case, error) {
 			break
 		}
 	}
-	fmt.Println(returnCase)
 	return returnCase, nil
 }
 
 func (r *CaseRepo) GetCases(accessToken string) ([]models.Case, error) {
-	fmt.Println(r.cases);
 	return r.cases, nil
 }
 
@@ -40,6 +38,5 @@ func (r *CaseRepo) CreateCase(accessToken string, caseArg models.InputCase) (str
 		Id:     id,
 	}
 	r.cases = append(r.cases, c)
-	fmt.Println(r.cases);
 	return id, nil
 }
